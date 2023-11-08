@@ -4,7 +4,7 @@ This is the project to find the fake gold, test the UI for http://sdetchallenge.
 Before you begin, make sure you have the following prerequisites installed on your system:
 
 - [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-downloads.html) version 17 or higher.
-- [Maven](https://maven.apache.org/download.cgi) installed on your system.
+- [Maven](https://maven.apache.org/download.cgi)
 - [Intellij](https://www.jetbrains.com/idea/)[Suggested] to better view the code and run the project.
 
 ## How to run the project
