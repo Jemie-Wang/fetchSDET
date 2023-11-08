@@ -43,7 +43,7 @@ Before you begin, make sure you have the following prerequisites installed on yo
      ```bash
      mvn test -Dtest=ExtraTest
 ## Best algorithm
-The logic of find the fake gold with minimum time of weigh is:
+The logic of find the fake gold with minimum number of weighing is:
 1. Partition the gold into three groups, each containing three gold bars.
 2. Weigh the first two groups. If one group is lighter than the other, that group contains the fake gold. Otherwise, the fake gold is in the third group.
 3. Continue to partition the group with fake gold into three groups, each containing one gold bar.
