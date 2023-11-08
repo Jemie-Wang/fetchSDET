@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="006fc48f-0dc0-4ae2-98c9-1d660a22b1d0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/FakeGoldFinder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ExtraTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/MainTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/RunTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +65,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest.testFindCorrectTarget">
+  <component name="RunManager" selected="JUnit.ExtraTest.testDuplicateValueOnOneSize">
     <configuration name="ExtraTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="fetchSDET" />
       <option name="PACKAGE_NAME" value="" />
@@ -81,21 +75,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExtraTest.testFindWrongTarget" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ExtraTest.testDuplicateValueOnOneSize" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="fetchSDET" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="ExtraTest" />
-      <option name="METHOD_NAME" value="testFindWrongTarget" />
+      <option name="METHOD_NAME" value="testDuplicateValueOnOneSize" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ExtraTest.testSameValueOnBothSide" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ExtraTest.testInvalidInput" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="fetchSDET" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="ExtraTest" />
-      <option name="METHOD_NAME" value="testSameValueOnBothSide" />
+      <option name="METHOD_NAME" value="testInvalidInput" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -122,11 +116,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ExtraTest.testDuplicateValueOnOneSize" />
+        <item itemvalue="JUnit.ExtraTest.testInvalidInput" />
         <item itemvalue="JUnit.MainTest.testFindCorrectTarget" />
         <item itemvalue="JUnit.ExtraTest" />
         <item itemvalue="JUnit.MainTest" />
-        <item itemvalue="JUnit.ExtraTest.testFindWrongTarget" />
-        <item itemvalue="JUnit.ExtraTest.testSameValueOnBothSide" />
       </list>
     </recent_temporary>
   </component>
@@ -139,7 +133,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699333906431</updated>
       <workItem from="1699333908537" duration="1858000" />
-      <workItem from="1699381072699" duration="21228000" />
+      <workItem from="1699381072699" duration="21885000" />
     </task>
     <servers />
   </component>
