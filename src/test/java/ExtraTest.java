@@ -47,15 +47,22 @@ public class ExtraTest {
      * */
     @Test
     public void testInvalidInput(){
-        WebElement cell = finder.driver.findElement(By.id("left_" + 0));
+        WebElement cell = finder.driver.findElement(By.id("left_0"));
         cell.sendKeys("x");
         Assert.assertTrue(cell.getText().equals(""));
+
         cell.sendKeys("10");
-        Assert.assertTrue(cell.getText().equals(""));
+        Assert.assertTrue(cell.getAttribute("value").equals("1"));
+
+        cell = finder.driver.findElement(By.id("left_1"));
         cell.sendKeys("9");
-        Assert.assertTrue(cell.getText().equals(""));
+        Assert.assertTrue(cell.getAttribute("value").equals(""));
+
         cell.sendKeys("%");
-        Assert.assertTrue(cell.getText().equals(""));
+        Assert.assertTrue(cell.getAttribute("value").equals(""));
+
+        cell.sendKeys("5");
+        Assert.assertTrue(cell.getAttribute("value").equals("5"));
     }
 
     /**
