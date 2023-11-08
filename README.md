@@ -35,7 +35,7 @@ Before you begin, make sure you have the following prerequisites installed on yo
      mvn test -Dtest=MainTest
    - ExtraTest:<br>
    Hidden when build the project, the test to verify other UI logic including:<br>
-     - Click on the real gold<br>
+     - Fail to find the fake gold(click on the real gold)<br>
      - Invalid input to bowl<br>
      - Duplicate gold index on one bowl<br>
      - Same gold index on both sides of the sacle<br>
