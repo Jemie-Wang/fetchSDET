@@ -24,7 +24,24 @@ public class ExtraTest {
         finder.exist();
     }
     /**
-     * Test if the correct alert is produced when the fake gold failed to be found.
+     * Test if the correct alert is produced when click the click result.
+     * */
+    @Test
+    public void testFindCorrectTarget(){
+        // Get the fake gold
+        int fakeGold = finder.findFakeGold();
+        WebElement fakeGoldButton = finder.wait.until(ExpectedConditions.elementToBeClickable(By.id("coin_" + fakeGold)));
+        fakeGoldButton.click();
+
+        // Read the alert message
+        Alert alertDialog = finder.wait.until(ExpectedConditions.alertIsPresent());
+        String alertText = alertDialog.getText();
+        logger.info("Get alert message: " + alertText);
+        Assert.assertTrue("Find the fake bar", "Yay! You find it!".equals(alertText));
+        alertDialog.accept();
+    }
+    /**
+     * Test if the correct alert is produced when click the wrong result.
      * */
     @Test
     public void testFindWrongTarget(){
