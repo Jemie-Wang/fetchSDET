@@ -1,4 +1,5 @@
 import com.sun.tools.javac.Main;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class FakeGoldFinder {
@@ -70,6 +72,18 @@ public class FakeGoldFinder {
         wait.until(allInputsEmpty);
         // The lighter on in the group is the fake gold
         res = weigh(group1Start, group2Start, group3Start);
+
+        // Click the fake gold
+        WebElement fakeGoldButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("coin_" + res)));
+        fakeGoldButton.click();
+
+        Alert alertDialog = wait.until(ExpectedConditions.alertIsPresent());
+        String alertText = alertDialog.getText();
+        try{TimeUnit.SECONDS.sleep(4);}
+        catch (InterruptedException ex){};
+        logger.info("Get alert message" + alertText);
+        alertDialog.accept();
+
         logger.info("Find the fake gold, id: " + res);
         logger.info("The weighing results are:");
         List<WebElement> liList = olElement.findElements(By.tagName("li"));
