@@ -21,7 +21,7 @@
         <version>3.0.0-M5</version>
         <configuration>
           <excludes>
-            <exclude>**/ExtraTest.java</exclude>
+            <exclude>**/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>
