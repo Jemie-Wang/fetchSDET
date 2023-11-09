@@ -1,5 +1,13 @@
 # fetchSDET
 This is the project to find the fake gold, test the UI for http://sdetchallenge.fetch.com/.
+## Best algorithm
+The logic of find the fake gold with minimum number of weighing is:
+1. Partition the gold into three groups, each containing three gold bars.
+2. Weigh the first two groups. If one group is lighter than the other, that group contains the fake gold. Otherwise, the fake gold is in the third group.
+3. Continue to partition the group with fake gold into three groups, each containing one gold bar.
+4. Weigh the first two bars. If one bar is lighter than the other, that one is the fake gold. Otherwise, the fake gold is the third one.
+     
+
 ## Dependencies
 Before you begin, make sure you have the following prerequisites installed on your system:
 
@@ -21,30 +29,21 @@ Before you begin, make sure you have the following prerequisites installed on yo
    mvn clean install
    ```
    This command will compile the source code, run the unhidden tests, and generate project artifacts.
-4. Run the code to find fake gold
+4. Run the code to find fake gold, **which implements the best algorithm**
    ```bash
    java -jar target/fetchSDET-1.0-SNAPSHOT.jar
    ```
-5. Run the test to test the UI<br>
-   There are two sets of test:
-   - MainTest:<br>
-     The test to verify if the UI could preform correct logic for finding the fake gold under the best algorithm.<br>
-     Run with the command
-     ```bash
-     mvn test -Dtest=MainTest
-   - ExtraTest:<br>
-   Hidden when build the project, the test to verify other UI logic including:<br>
-     - Fail to find the fake gold(click on the real gold)<br>
-     - Invalid input to bowl<br>
-     - Duplicate gold index on one bowl<br>
-     - Same gold index on both sides of the sacle<br>
-    Run with the command
-     ```bash
-     mvn test -Dtest=ExtraTest
-## Best algorithm
-The logic of find the fake gold with minimum number of weighing is:
-1. Partition the gold into three groups, each containing three gold bars.
-2. Weigh the first two groups. If one group is lighter than the other, that group contains the fake gold. Otherwise, the fake gold is in the third group.
-3. Continue to partition the group with fake gold into three groups, each containing one gold bar.
-4. Weigh the first two bars. If one bar is lighter than the other, that one is the fake gold. Otherwise, the fake gold is the third one.
-     
+   This will open the browser, fill out the bowls grids with bar numbers, click on buttons (“Weigh”, “Reset”), get the measurement results with the minimum steps, and then click on the fake gold bar number at the bottom, and log the relevant information.<br>
+   <br>
+   To enhance the user experience, the alert will be displayed for 4 seconds before it is automatically dismissed.
+## Test Components:
+To enhance the readability and comprehensiveness of our test results, JUnit framework was used to introduce additional unit tests. These tests verify the UI's behavior under various scenarios to ensure its correctness. Specifically:
+
+- Verify that the appropriate alert is triggered when the correct or incorrect number of gold bars is selected.
+- Confirm that the bowl rejects invalid inputs, such as numbers outside the range of 0 to 8 or non-numeric inputs.
+- Check for an alert if a duplicate gold bar index is placed in a single bowl.
+- Ensure that an alert is raised if the same gold bar index is positioned on both sides of the scale.
+
+To run the test, use command
+  ```bash
+  mvn test -Dtest=ExtraTest
