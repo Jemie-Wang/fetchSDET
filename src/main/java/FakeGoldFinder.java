@@ -13,20 +13,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class FakeGoldFinder {
-    static WebDriver driver;
-    static WebDriverWait wait;
-    static WebElement resetButton;
-    static WebElement weighButton;
-    static WebElement olElement;
-    static ExpectedCondition<Boolean> allInputsEmpty;
-    static Logger logger;
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private ExpectedCondition<Boolean> allInputsEmpty;
+    private Logger logger;
     FakeGoldFinder(){
         driver = new ChromeDriver();
+        // Make sure the page is fully loaded
+        driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
         driver.get("http://sdetchallenge.fetch.com/");
         wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-        resetButton = driver.findElement(By.xpath("//button[text()='Reset']"));
-        weighButton = driver.findElement(By.id("weigh"));
-        olElement = driver.findElement(By.cssSelector("div.game-info ol"));
         // Define a custom ExpectedCondition to check that all input fields are empty
         allInputsEmpty = new ExpectedCondition<Boolean>() {
             @Override
@@ -39,95 +35,67 @@ public class FakeGoldFinder {
         };
         logger = Logger.getLogger(Main.class.getName());
     }
-    public static int findFakeGold(){
-        // Partition the gold into three groups, each containing consecutive indices,
-        // identify each group by the starting index.
-        int group1Start = 0;
-        int group2Start = 3;
-        int group3Start = 6;
-        // Find the lighter group
-        int res = weigh(group1Start, group2Start, group3Start);
-        // If group1 is lighter, the fake gold is with group1, continue to partition group1
-        if(res == group1Start){
-            group1Start = 0;
-            group2Start = 1;
-            group3Start = 2;
-        }
-        // If group2 is lighter, the fake gold is with group2, continue to partition group2
-        else if(res == group2Start){
-            group1Start = 3;
-            group2Start = 4;
-            group3Start = 5;
-        }
-        // If group3 is lighter, then the fake gold is in group1，continue to partition group3
-        else if(res == group3Start){
-            group1Start = 6;
-            group2Start = 7;
-            group3Start = 8;
-        }
+    public int findFakeGold() {
+        try {
+            WebElement resetButton = driver.findElement(By.xpath("//button[text()='Reset']"));
+            WebElement weighButton = driver.findElement(By.id("weigh"));
+            WebElement olElement = driver.findElement(By.cssSelector("div.game-info ol"));
+            // Partition the gold into three groups, each containing consecutive indices,
+            // identify each group by the starting index.
+            int result = performWeighing(0, 3, 6, resetButton, weighButton, olElement);
+            // Find the lighter group, and further partition it into three group, each have 1 gold bar
+            result = performWeighing(result * 3, result * 3 + 1, result * 3 + 2, resetButton, weighButton, olElement);
 
-        // reset the scale for next round
-        resetButton.click();
-        // Wait until the scale is clear
-        wait.until(allInputsEmpty);
-        // The lighter on in the group is the fake gold
-        res = weigh(group1Start, group2Start, group3Start);
-
-        // Click the fake gold
-        WebElement fakeGoldButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("coin_" + res)));
-        fakeGoldButton.click();
-
-        Alert alertDialog = wait.until(ExpectedConditions.alertIsPresent());
-        String alertText = alertDialog.getText();
-        try{TimeUnit.SECONDS.sleep(4);}
-        catch (InterruptedException ex){};
-        logger.info("Get alert message" + alertText);
-        alertDialog.accept();
-
-        logger.info("Find the fake gold, id: " + res);
-        logger.info("The weighing results are:");
-        List<WebElement> liList = olElement.findElements(By.tagName("li"));
-        for(WebElement li : liList){
-            logger.info(li.getText());
+            clickFakeGold(result, olElement);
+            return result;
+        } catch (Exception e) {
+            logger.severe("An error occurred: " + e.getMessage());
+            return -1;
         }
-        return res;
     }
-
-    /**
-     * Given three group, weigh the first two to identify which is the lighter group among the three
-     * */
-    private static int weigh(int group1Start, int group2Start, int group3Start){
-        // Each group is represented by the starting index and contains consecutive indices.
-        // Add the gold to the scale
-        for (int i = group1Start; i < group2Start; i++) {
-            WebElement cellL = driver.findElement(By.id("left_" + i));
-            cellL.sendKeys("" + i);
-        }
-
-        for (int i = group2Start; i < group3Start; i++) {
-            WebElement cellR = driver.findElement(By.id("right_" + i));
-            cellR.sendKeys("" + i);
-        }
-
+    private int performWeighing(int group1Start, int group2Start, int group3Start, WebElement resetButton, WebElement weighButton, WebElement olElement) {
         int initialListSize = olElement.findElements(By.tagName("li")).size();
-        // Weigh the two
-        weighButton.click();
 
-        // Only read when the new result is updated
-        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(
-                By.cssSelector("div.game-info ol li"), initialListSize));
+        addGoldToScale(group1Start, group2Start, "left");
+        addGoldToScale(group2Start, group3Start, "right");
+
+        weighButton.click();
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div.game-info ol li"), initialListSize));
 
         WebElement lastLi = driver.findElement(By.cssSelector("div.game-info ol li:last-child"));
         String[] text = lastLi.getText().split(" ");
 
-        // If the current two group on scale is of equal weight, the group3 should contain the fake gold
-        if (text[1].equals("=")) return group3Start;
-        else if (text[1].equals(">")) return group2Start;
-        else if (text[1].equals("<")) return group1Start;
-        return -1; // if none of the conditions are met, return an invalid index
+        resetButton.click();
+        wait.until(allInputsEmpty);
+
+        if (text[1].equals("=")) return 2;
+        else if (text[1].equals(">")) return 1;
+        else return 0;
+    }
+    private void addGoldToScale(int start, int end, String side) {
+        for (int i = start; i < end; i++) {
+            WebElement cell = driver.findElement(By.id(side + "_" + i));
+            cell.sendKeys("" + i);
+        }
     }
 
-    public static void exist(){
+    private void clickFakeGold(int groupIndex, WebElement olElement) {
+        WebElement fakeGoldButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("coin_" + groupIndex)));
+        fakeGoldButton.click();
+
+        Alert alertDialog = wait.until(ExpectedConditions.alertIsPresent());
+        logger.info("Alert message: " + alertDialog.getText());
+        try{TimeUnit.SECONDS.sleep(4);}
+        catch (InterruptedException ex){};
+        alertDialog.accept();
+
+        List<WebElement> liList = olElement.findElements(By.tagName("li"));
+        for (WebElement li : liList) {
+            logger.info(li.getText());
+        }
+    }
+
+    public void exit(){
         if (driver != null) {
             driver.quit();
         }
@@ -135,7 +103,7 @@ public class FakeGoldFinder {
     public static void main(String[] args){
         FakeGoldFinder finder = new FakeGoldFinder();
         finder.findFakeGold();
-        finder.exist();
+        finder.exit();
     }
 
 }
